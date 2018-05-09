@@ -38,31 +38,31 @@ public class enemySpawn : MonoBehaviour {
             if (enemyCount == 5)
             {
                 secondsBetweenSpawns = 4;
-                enemyNumber = 3;
+                enemyNumber = 2;
             }
 
             if (enemyCount == 10)
             {
                 secondsBetweenSpawns = 3;
-                enemyNumber = 4;
+                enemyNumber = 3;
             }
 
             if (enemyCount == 20)
             {
                 secondsBetweenSpawns = 2;
-                enemyNumber = 6;
+                enemyNumber = 4;
             }
 
             if (enemyCount == 30)
             {
                 secondsBetweenSpawns = 1;
-                enemyNumber = 8;
+                enemyNumber = 6;
             }
 
             if (enemyCount == 40)
             {
                 secondsBetweenSpawns = 1;
-                enemyNumber = 10;
+                enemyNumber = 7;
             }
 
             yield return new WaitForSeconds(secondsBetweenSpawns);

@@ -15,16 +15,13 @@ public class target : MonoBehaviour {
 
 
 
-   
-
 
     public void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         EnemyTarget = player.transform;
         agent = GetComponent<NavMeshAgent>();
-        
-      
+
 
     }
 
@@ -32,13 +29,10 @@ public class target : MonoBehaviour {
     {
        
             agent.SetDestination(EnemyTarget.position);
-        
-        
+           
     }
 
   
-
-
 
 
     public void Takedamage(float damage)
@@ -56,13 +50,15 @@ public class target : MonoBehaviour {
     {
 
        
-        Destroy(gameObject);
+        Destroy(gameObject,0.3f);
         
     }
 
- 
-
    
 
-    
+
+
+
+
+
 }
