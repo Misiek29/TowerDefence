@@ -13,7 +13,9 @@ public class target : MonoBehaviour {
     NavMeshAgent agent;
     GameObject tower;
 
+    private bool die = false;
 
+    GameObject PointCounterObject;
 
 
     public void Start()
@@ -21,6 +23,8 @@ public class target : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player");
         EnemyTarget = player.transform;
         agent = GetComponent<NavMeshAgent>();
+
+        PointCounterObject = GameObject.Find("PointCounter");
 
 
     }
@@ -41,6 +45,7 @@ public class target : MonoBehaviour {
 
         if (health <= 0)
         {
+            
            
             Die();
         }
@@ -48,10 +53,16 @@ public class target : MonoBehaviour {
 
     public void Die()
     {
-
-       
-        Destroy(gameObject,0.3f);
         
+
+        Destroy(gameObject,0.3f);
+        while(die ==false)
+        {
+            PointCounterObject.GetComponent<PointCounterScript>().AddPoint();
+            die = true;
+        }
+        
+
     }
 
    

@@ -5,24 +5,34 @@ using UnityEngine.UI;
 
 public class enemyAttack : MonoBehaviour {
 
-    GameObject Panel;
-    
-    GameObject tower;
+
+
+    private int gameOver = 0;
+
+    GameObject point;
 
     // Use this for initialization
 
+    public GameObject gameOverCanvas;
+
     private void Start()
     {
-        tower = GameObject.FindGameObjectWithTag("Tower");
-        Panel = GameObject.FindGameObjectWithTag("GameOver");
+       
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Tower")
+        if(other.tag == "Enemy")
         {
-           // Debug.Log("dfdfdfdf");
-            Panel.transform.localScale = new Vector3(1f, 1f, 1f);
+            gameOver += 1;
+            // Debug.Log("dfdfdfdf");
+            //Panel.transform.localScale = new Vector3(1f, 1f, 1f);
+            if(gameOver == 1)
+            {
+                gameOverCanvas.GetComponent<GameOver>().GameOverFunction();
+               
+            }
+            
         }
     }
 

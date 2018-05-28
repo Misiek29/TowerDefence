@@ -87,8 +87,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GunSpawn.cs" />
-    <Compile Include="Assets\SwitchGuns.cs" />
     <Compile Include="Assets\package\GoogleVR\Demos\Scripts\DemoInputManager.cs" />
     <Compile Include="Assets\package\GoogleVR\Demos\Scripts\DemoSceneManager.cs" />
     <Compile Include="Assets\package\GoogleVR\Demos\Scripts\HelloVR\HeadsetDemoManager.cs" />
@@ -192,6 +190,11 @@
     <Compile Include="Assets\package\GoogleVR\Scripts\Utilities\GvrUIHelpers.cs" />
     <Compile Include="Assets\package\GoogleVR\Scripts\Utilities\GvrVRHelpers.cs" />
     <Compile Include="Assets\package\GoogleVR\Scripts\Video\GvrVideoPlayerTexture.cs" />
+    <Compile Include="Assets\script\ChangeWeapon.cs" />
+    <Compile Include="Assets\script\GameOver.cs" />
+    <Compile Include="Assets\script\GunSpawn.cs" />
+    <Compile Include="Assets\script\PointCounterScript.cs" />
+    <Compile Include="Assets\script\SwitchGuns.cs" />
     <Compile Include="Assets\script\controlmagnetic.cs" />
     <Compile Include="Assets\script\enemyAttack.cs" />
     <Compile Include="Assets\script\enemySpawn.cs" />

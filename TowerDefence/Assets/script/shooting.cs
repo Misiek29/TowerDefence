@@ -7,18 +7,23 @@ public class shooting : MonoBehaviour {
 
     public bool magnetDetectionEnabled = true;
     int point = 0;
-    public Text ScoreCounter;
+    
     public Text AmmunitionCounter;
-    public Image image;
+    public Image celownik;
 
     public float damage = 10f;
     public float range = 100f;
-    public int actualGun = 0;
+    //public int actualGun = 0;
 
+   
+
+
+    public int actualammunition;
 
     public int ammunition;
 
     public GameObject gunSpawner;
+    public ParticleSystem muzzleFlash;
 
     private float timeToNextFire = 0f;
     private float fireRate = 10f;
@@ -28,8 +33,12 @@ public class shooting : MonoBehaviour {
     public GameObject shootEffect;
     public GameObject bloodEffect;
     public Camera fpsCam;
+    private GameObject ChangeWeaponObject;
 
-    public GameObject[] guns;
+    public bool ammoCounter;
+    public bool machineShoot;
+
+    // public GameObject[] guns;
 
 
 
@@ -38,6 +47,12 @@ public class shooting : MonoBehaviour {
         magnetfull.SetEnabled(magnetDetectionEnabled);
         // Disable screen dimming:
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+        ChangeWeaponObject = GameObject.Find("Guns");
+
+        actualammunition = ammunition;
+
+      
     }
 
     // Update is called once per frame
@@ -48,75 +63,50 @@ public class shooting : MonoBehaviour {
         //Input.GetButtonDown("Fire1")
         //magnetfull.CheckIfWasClicked()
 
-        if (ammunition <= 0)
+
+        if (actualammunition <= 0)
         {
-            actualGun = 0;
+            reload();
+            ChangeWeaponObject.GetComponent<ChangeWeapon>().SwitchWeapon(0);
         }
 
-        switch (actualGun)
+
+        if (machineShoot == true)
         {
-
-            case 0:
-
-                ChangeWeapon(0);
-                damage = 10;
-                range = 12;
-                ammunition = 10;
-                if (Input.GetButtonDown("Fire1"))
-                {
-                    shoot();
-                    magnetfull.ResetClick();
-                }
-                break;
-
-
-            case 1:
-                ChangeWeapon(1);
-                damage = 10;
-                range = 18;
-
-                if (Input.GetButton("Fire1") && Time.time >= timeToNextFire)
-                {
-                    shoot();
-                    magnetfull.ResetClick();
-                    timeToNextFire = Time.time + 1f / fireRate;
-                }
-                break;
-
-            case 2:
-
-                ChangeWeapon(2);
-                damage = 50;
-                range = 100;
-
-                if (Input.GetButtonDown("Fire1"))
-                {
-                    shoot();
-                    magnetfull.ResetClick();
-
-                }
-                break;
-
-
-               
-
+            if (Input.GetButton("Fire1") && Time.time >= timeToNextFire)
+            {
+                shoot();
+                magnetfull.ResetClick();
+                timeToNextFire = Time.time + 1f / fireRate;
+            }
         }
+        else
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                shoot();
+                magnetfull.ResetClick();
+            }
+        }
+        
 
-        ShowAmmo();
+
+            
+            ShowAmmo();
 
 
-
+    
 
         // zmiana celownika
         RaycastHit hit2;
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit2, range) && hit2.transform.tag == "Enemy")
         {
-            image.GetComponent<Image>().color = new Color(255, 0, 0, 100);
+            celownik.GetComponent<Image>().color = new Color(255, 0, 0, 100);
         }
         else
         {
             //image.transform.localScala = new Vector3(0.2f, 0.2f, 0.2f); 
-            image.GetComponent<Image>().color = new Color(0, 0, 0, 100);
+            celownik.GetComponent<Image>().color = new Color(0, 0, 0, 100);
         }
 
 
@@ -125,12 +115,13 @@ public class shooting : MonoBehaviour {
 
     public void shoot()
     {
+        muzzleFlash.Play();
         RaycastHit hit;
-       
-        ammunition--;
 
-        
-
+        if (ammoCounter == true)
+        {
+            actualammunition--;
+        }
 
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
@@ -149,17 +140,16 @@ public class shooting : MonoBehaviour {
             {
                 GenerateBlood(hit.point, hit.normal);
 
-                addpoint();
+                
                 actualtarget.Takedamage(damage);
 
             }
 
             if (hit.transform.tag == "MachineGun")
             {
+                reload();
+                ChangeWeaponObject.GetComponent<ChangeWeapon>().SwitchWeapon(1);
 
-                actualGun = 1;
-                ammunition = 33;
-                
                 gunSpawner.GetComponent<GunSpawn>().Spawn();
                 Destroy(hit.transform.gameObject);
 
@@ -168,35 +158,27 @@ public class shooting : MonoBehaviour {
 
             if (hit.transform.tag == "SniperGun")
             {
-                actualGun = 2;
-                ammunition = 10;
+                reload();
+                ChangeWeaponObject.GetComponent<ChangeWeapon>().SwitchWeapon(2); ;
                 
                 gunSpawner.GetComponent<GunSpawn>().Spawn();
                 Destroy(hit.transform.gameObject);
 
             }
 
-
         }
 
-
     }
 
-    public void addpoint()
-    {
-        point += 1;
-        ScoreCounter.text = "Score: " + point;
-
-    }
 
     public void ShowAmmo()
     {
-        if (actualGun == 0)
+        if (ammoCounter == false)
         {
             AmmunitionCounter.text = "Ammunition: infinity";
         }
         else
-        AmmunitionCounter.text = "Ammunition: " + ammunition;
+        AmmunitionCounter.text = "Ammunition: " + actualammunition;
     }
 
 
@@ -206,16 +188,12 @@ public class shooting : MonoBehaviour {
         DestroyObject(BloodObject, 1f);
     }
 
-    public void ChangeWeapon(int gunToActive)
+    public void reload()
     {
-        foreach (var item in guns)
-        {
-            item.SetActive(false);
-
-        }
-
-        guns[gunToActive].SetActive(true);
+        actualammunition = ammunition;
     }
+
+ 
 
     
 }
