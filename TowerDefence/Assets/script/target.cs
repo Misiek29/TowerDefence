@@ -12,10 +12,19 @@ public class target : MonoBehaviour {
     GameObject player;
     NavMeshAgent agent;
     GameObject tower;
+    GameObject PointCounterObject;
+    GameObject Armature;
 
     private bool die = false;
+    private bool namierzaj = true;
+    private Collider enemyCollider;
 
-    GameObject PointCounterObject;
+    
+ 
+
+    
+
+    
 
 
     public void Start()
@@ -25,14 +34,21 @@ public class target : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
 
         PointCounterObject = GameObject.Find("PointCounter");
+        Armature = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+        enemyCollider = GetComponent<CapsuleCollider>();
+        
+
 
 
     }
 
     public void Update()
     {
-       
+       if (namierzaj == true)
+        {
             agent.SetDestination(EnemyTarget.position);
+        }
+           
            
     }
 
@@ -53,9 +69,11 @@ public class target : MonoBehaviour {
 
     public void Die()
     {
-        
-
-        Destroy(gameObject,0.3f);
+        namierzaj = false;
+        agent.enabled = false;
+        enemyCollider.enabled = false;
+        Destroy(gameObject,20f);
+        Armature.SetActive(true);
         while(die ==false)
         {
             PointCounterObject.GetComponent<PointCounterScript>().AddPoint();
