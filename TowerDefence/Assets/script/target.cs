@@ -20,7 +20,7 @@ public class target : MonoBehaviour {
 
     public void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Tower");
         EnemyTarget = player.transform;
         agent = GetComponent<NavMeshAgent>();
 

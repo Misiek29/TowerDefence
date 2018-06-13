@@ -13,6 +13,7 @@ public class shooting : MonoBehaviour {
 
     public float damage = 10f;
     public float range = 100f;
+    public float impactForce;
     //public int actualGun = 0;
 
    
@@ -145,6 +146,11 @@ public class shooting : MonoBehaviour {
 
             }
 
+            if (hit.rigidbody != null)
+            {
+                hit.rigidbody.AddForce(-hit.normal * impactForce);
+            }
+
             if (hit.transform.tag == "MachineGun")
             {
                 reload();
@@ -185,7 +191,7 @@ public class shooting : MonoBehaviour {
     public void GenerateBlood(Vector3 place, Vector3 rotation)
     {
         GameObject BloodObject = Instantiate(bloodEffect, place, Quaternion.LookRotation(rotation));
-        DestroyObject(BloodObject, 1f);
+        DestroyObject(BloodObject, 2.5f);
     }
 
     public void reload()
